@@ -1,24 +1,49 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
+import { Nav } from "@/components/qevra/Nav";
+import { Hero } from "@/components/qevra/Hero";
+import { Simulator } from "@/components/qevra/Simulator";
+import { Capabilities } from "@/components/qevra/Capabilities";
+import { DownloadSetup } from "@/components/qevra/DownloadSetup";
+import { Shortcuts } from "@/components/qevra/Shortcuts";
+import { Roadmap } from "@/components/qevra/Roadmap";
+import { Waitlist } from "@/components/qevra/Waitlist";
+import { FaqFeedback } from "@/components/qevra/FaqFeedback";
+import { Footer } from "@/components/qevra/Footer";
+
+const title = "QEVRA Desktop — Local-first AI voice-to-action for Windows";
+const description =
+  "Hold Right Alt, speak, and paste instantly at your cursor. Local-first ambient dictation and context-aware copilot for Windows 10/11, powered by Groq Whisper-large-v3.";
+
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title },
+      { name: "description", content: description },
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
+    <div className="min-h-screen bg-background">
+      <Nav />
+      <main>
+        <Hero />
+        <Simulator />
+        <Capabilities />
+        <DownloadSetup />
+        <Shortcuts />
+        <Roadmap />
+        <Waitlist />
+        <FaqFeedback />
+      </main>
+      <Footer />
     </div>
   );
 }
