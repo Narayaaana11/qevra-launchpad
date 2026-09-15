@@ -90,7 +90,7 @@ export function DownloadSetup() {
               <Magnet padding={40} magnetStrength={3} wrapperClassName="w-full">
                 <StarBorder
                   as="a"
-                  href="https://github.com/Narayaaana11/QEVRA/releases/download/v0.1.0/QEVRA-Flow-Setup.exe"
+                  href="https://github.com/Narayaaana11/qevra-launchpad/releases/download/v0.1.0/QEVRA-Flow-Setup.exe"
                   download="QEVRA-Flow-Setup.exe"
                   onClick={() => toast.success("Starting download from QEVRA Release CDN...")}
                   color="#38bdf8"
@@ -115,7 +115,7 @@ export function DownloadSetup() {
                 <span>Global CDN Mirror (GitHub Releases)</span>
               </div>
               <a
-                href="https://github.com/Narayaaana11/QEVRA/releases"
+                href="https://github.com/Narayaaana11/qevra-launchpad/releases"
                 target="_blank"
                 rel="noreferrer"
                 className="font-mono text-[11px] text-cyan hover:underline"
