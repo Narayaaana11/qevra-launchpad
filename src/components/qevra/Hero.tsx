@@ -102,7 +102,7 @@ export function Hero() {
                     <ArrowDown className="h-3.5 w-3.5 text-emerald transition-transform group-hover:translate-y-0.5" />
                   </div>
                   <span className="font-mono text-[10px] text-zinc-400">
-                    v0.1.0 · ~161 MB · 64-bit · Free MVP
+                    v0.1.0 · ~170 MB · 64-bit · Free MVP
                   </span>
                 </div>
               </div>
