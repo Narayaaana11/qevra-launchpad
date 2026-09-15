@@ -23,7 +23,7 @@ import {
   DecryptedText
 } from "@/components/reactbits";
 
-const SHA256_CHECKSUM = "fc53ea6cab6753f6fc742f6c75530ed69464824dd9543d47c2b711a96faa1f7a";
+const SHA256_CHECKSUM = "9c2639de9aa7012d3855a2335993c17322258e2bbbc800bbacad16e053f91d7f";
 
 function WindowsIcon({ className = "h-4 w-4" }: { className?: string }) {
   return (
@@ -80,7 +80,7 @@ export function DownloadSetup() {
                   </span>
                 </div>
                 <p className="font-mono text-[11px] text-muted-foreground">
-                  v0.1.0 · ~161 MB · Windows 10 &amp; 11 (x64)
+                  v0.1.0 · ~170 MB · Windows 10 &amp; 11 (x64)
                 </p>
               </div>
             </div>
