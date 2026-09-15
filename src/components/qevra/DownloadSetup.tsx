@@ -90,9 +90,9 @@ export function DownloadSetup() {
               <Magnet padding={40} magnetStrength={3} wrapperClassName="w-full">
                 <StarBorder
                   as="a"
-                  href="/QEVRA-Flow-Setup.exe"
+                  href="https://github.com/Narayaaana11/QEVRA/releases/download/v0.1.0/QEVRA-Flow-Setup.exe"
                   download="QEVRA-Flow-Setup.exe"
-                  onClick={() => toast.success("Starting download: QEVRA-Flow-Setup.exe")}
+                  onClick={() => toast.success("Starting download from QEVRA Release CDN...")}
                   color="#38bdf8"
                   speed="3s"
                   thickness={1.5}
@@ -108,10 +108,20 @@ export function DownloadSetup() {
               </Magnet>
             </div>
 
-            {/* Portable build note */}
-            <div className="mt-3 flex items-center justify-between rounded-lg border border-border/70 bg-canvas/60 px-3 py-2 text-xs text-muted-foreground">
-              <span>Standalone portable folder also bundled in release</span>
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald" />
+            {/* Mirror & Portable build note */}
+            <div className="mt-3 flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-lg border border-border/70 bg-canvas/60 px-3 py-2 text-xs text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-emerald shrink-0" />
+                <span>Global CDN Mirror (GitHub Releases)</span>
+              </div>
+              <a
+                href="https://github.com/Narayaaana11/QEVRA/releases"
+                target="_blank"
+                rel="noreferrer"
+                className="font-mono text-[11px] text-cyan hover:underline"
+              >
+                All Releases &amp; Mirrors →
+              </a>
             </div>
 
             {/* Windows SmartScreen Note */}
