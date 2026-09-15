@@ -1,118 +1,267 @@
-import { Ticket } from "lucide-react";
-import { useState, type FormEvent } from "react";
+import { Ticket, ArrowRight, Check } from "lucide-react";
+import { useState, useEffect, type FormEvent } from "react";
 import { toast } from "sonner";
+import {
+  BorderGlow,
+  StarBorder,
+  Magnet,
+  ShinyText,
+  CountUp
+} from "@/components/reactbits";
 
-const platforms = ["Windows Power User", "macOS", "Linux"];
+const PLATFORMS = ["Windows Power User", "macOS", "Linux"];
+const STORAGE_KEY = "qevra_waitlist_entry";
+
+interface WaitlistData {
+  name: string;
+  email: string;
+  useCase: string;
+  platforms: string[];
+  position: number;
+}
 
 export function Waitlist() {
-  const [position, setPosition] = useState<number | null>(null);
-  const [picked, setPicked] = useState<string[]>(["Windows Power User"]);
+  const [data, setData] = useState<WaitlistData | null>(null);
   const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [useCase, setUseCase] = useState("Developer / Engineer");
+  const [pickedPlatforms, setPickedPlatforms] = useState<string[]>(["Windows Power User"]);
 
-  const toggle = (p: string) =>
-    setPicked((cur) => (cur.includes(p) ? cur.filter((x) => x !== p) : [...cur, p]));
+  // Restore stored submission if user already joined
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        setData(JSON.parse(stored));
+      }
+    } catch {
+      // ignore
+    }
+  }, []);
 
-  const submit = (e: FormEvent<HTMLFormElement>) => {
+  const togglePlatform = (p: string) => {
+    setPickedPlatforms((cur) =>
+      cur.includes(p) ? (cur.length > 1 ? cur.filter((x) => x !== p) : cur) : [...cur, p],
+    );
+  };
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const pos = 148 + Math.floor(Math.random() * 6);
-    setPosition(pos);
-    toast.success("You're on the list!", { description: `Priority access secured — position #${pos}.` });
+    if (!email || !email.includes("@")) {
+      toast.error("Please provide a valid work or personal email.");
+      return;
+    }
+
+    const calculatedPos = 148 + Math.floor(Math.random() * 8);
+    const entry: WaitlistData = {
+      name: name.trim() || "Builder",
+      email: email.trim(),
+      useCase,
+      platforms: pickedPlatforms,
+      position: calculatedPos,
+    };
+
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(entry));
+    } catch {
+      // ignore
+    }
+
+    setData(entry);
+    toast.success("You're on the priority list!", {
+      description: `Waitlist ticket #${calculatedPos} confirmed. Watch your inbox.`,
+    });
+  };
+
+  const handleReset = () => {
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      // ignore
+    }
+    setData(null);
+    setName("");
+    setEmail("");
   };
 
   return (
     <section id="waitlist" className="mx-auto max-w-3xl scroll-mt-20 px-5 py-24">
-      <div className="rounded-2xl surface-raised p-8 glow-ring">
-        <p className="font-mono text-[11px] tracking-[0.2em] text-subtle">EARLY ACCESS</p>
-        <h2 className="mt-3 text-2xl font-semibold tracking-[-0.02em] sm:text-3xl">
-          Join the QEVRA Pro &amp; Mac beta waitlist
-        </h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Offline on-device models, team dictionaries and macOS builds roll out to the list first.
-        </p>
+      <BorderGlow
+        borderRadius={24}
+        glowColor="190 85 65"
+        glowRadius={35}
+        glowIntensity={0.8}
+        colors={["#38bdf8", "#10b981", "#a855f7"]}
+        className="w-full"
+      >
+        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-b from-[#11131a] to-[#090a0f] p-8 sm:p-10 backdrop-blur-xl">
+          <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-cyan/10 blur-3xl" />
+          <div className="pointer-events-none absolute -left-20 -bottom-20 h-64 w-64 rounded-full bg-emerald/10 blur-3xl" />
 
-        {position === null ? (
-          <form onSubmit={submit} className="mt-8 space-y-5">
-            <div className="grid gap-5 sm:grid-cols-2">
-              <label className="block">
-                <span className="text-xs text-subtle">Name</span>
-                <input
-                  required
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  placeholder="Ada Lovelace"
-                  className="mt-1.5 w-full rounded-lg border border-input bg-canvas px-3 py-2.5 text-sm outline-none transition-colors placeholder:text-subtle/70 focus:border-[color-mix(in_oklab,var(--cyan)_50%,transparent)]"
-                />
-              </label>
-              <label className="block">
-                <span className="text-xs text-subtle">Email</span>
-                <input
-                  required
-                  type="email"
-                  placeholder="you@company.com"
-                  className="mt-1.5 w-full rounded-lg border border-input bg-canvas px-3 py-2.5 text-sm outline-none transition-colors placeholder:text-subtle/70 focus:border-[color-mix(in_oklab,var(--cyan)_50%,transparent)]"
-                />
-              </label>
-            </div>
+          <div className="relative">
+            <p className="font-mono text-[11px] tracking-[0.2em] text-muted-foreground">
+              PRIORITY ACCESS
+            </p>
+            <h2 className="mt-3 text-2xl font-bold tracking-[-0.025em] text-foreground sm:text-3xl">
+              Join the QEVRA Pro &amp; Mac Beta Waitlist
+            </h2>
+            <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+              Be the first to access on-device offline Whisper models, team custom dictionaries, and
+              cross-platform companion releases.
+            </p>
 
-            <label className="block">
-              <span className="text-xs text-subtle">Primary use case</span>
-              <select
-                className="mt-1.5 w-full rounded-lg border border-input bg-canvas px-3 py-2.5 text-sm outline-none focus:border-[color-mix(in_oklab,var(--cyan)_50%,transparent)]"
-                defaultValue="Developer / Engineer"
-              >
-                {["Developer / Engineer", "Writer / Creator", "Founder / Exec", "Customer Support", "Other"].map(
-                  (o) => (
-                    <option key={o} value={o} className="bg-canvas">
-                      {o}
-                    </option>
-                  ),
-                )}
-              </select>
-            </label>
+            {data === null ? (
+              <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+                <div className="grid gap-4 sm:grid-cols-2">
+                  <label className="block">
+                    <span className="text-xs font-medium text-zinc-300">Your Name</span>
+                    <input
+                      required
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Ada Lovelace"
+                      className="mt-1.5 w-full rounded-xl border border-border bg-background/80 px-3.5 py-2.5 text-sm text-foreground outline-none transition-all placeholder:text-zinc-600 focus:border-cyan focus:ring-1 focus:ring-cyan"
+                    />
+                  </label>
 
-            <div>
-              <span className="text-xs text-subtle">Platform interest</span>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {platforms.map((p) => (
-                  <button
-                    type="button"
-                    key={p}
-                    onClick={() => toggle(p)}
-                    className={`rounded-lg border px-3 py-2 text-xs transition-colors ${
-                      picked.includes(p)
-                        ? "border-[color-mix(in_oklab,var(--emerald)_45%,transparent)] text-emerald"
-                        : "border-border text-subtle hover:text-foreground"
-                    }`}
+                  <label className="block">
+                    <span className="text-xs font-medium text-zinc-300">Work or Personal Email</span>
+                    <input
+                      required
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="ada@company.com"
+                      className="mt-1.5 w-full rounded-xl border border-border bg-background/80 px-3.5 py-2.5 text-sm text-foreground outline-none transition-all placeholder:text-zinc-600 focus:border-cyan focus:ring-1 focus:ring-cyan"
+                    />
+                  </label>
+                </div>
+
+                <label className="block">
+                  <span className="text-xs font-medium text-zinc-300">Primary Use Case</span>
+                  <select
+                    value={useCase}
+                    onChange={(e) => setUseCase(e.target.value)}
+                    className="mt-1.5 w-full rounded-xl border border-border bg-background/80 px-3.5 py-2.5 text-sm text-foreground outline-none transition-all focus:border-cyan focus:ring-1 focus:ring-cyan"
                   >
-                    {p}
-                  </button>
-                ))}
-              </div>
-            </div>
+                    {[
+                      "Developer / Engineer",
+                      "Writer / Creator",
+                      "Founder / Exec",
+                      "Customer Support",
+                      "Other",
+                    ].map((o) => (
+                      <option key={o} value={o} className="bg-[#0e1017]">
+                        {o}
+                      </option>
+                    ))}
+                  </select>
+                </label>
 
-            <button
-              type="submit"
-              className="w-full rounded-xl bg-primary px-4 py-3 text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              Get Priority Access
-            </button>
-          </form>
-        ) : (
-          <div className="rise mt-8 rounded-xl border border-[color-mix(in_oklab,var(--emerald)_30%,transparent)] bg-canvas p-6">
-            <div className="flex items-center gap-3">
-              <Ticket className="h-5 w-5 text-emerald" />
-              <div>
-                <p className="text-sm font-medium">You&apos;re on the list{name ? `, ${name.split(" ")[0]}` : ""}!</p>
-                <p className="font-mono text-[11px] text-subtle">QEVRA PRO · EARLY ACCESS TICKET</p>
+                <div>
+                  <span className="text-xs font-medium text-zinc-300">Platform Interest</span>
+                  <div className="mt-2 flex flex-wrap gap-2.5">
+                    {PLATFORMS.map((p) => {
+                      const isSelected = pickedPlatforms.includes(p);
+                      return (
+                        <button
+                          type="button"
+                          key={p}
+                          onClick={() => togglePlatform(p)}
+                          className={`flex items-center gap-1.5 rounded-lg border px-3 py-2 text-xs font-medium transition-all ${
+                            isSelected
+                              ? "border-emerald/40 bg-emerald/10 text-emerald shadow-sm"
+                              : "border-border bg-background/60 text-muted-foreground hover:border-border-strong hover:text-foreground"
+                          }`}
+                        >
+                          {isSelected && <Check className="h-3 w-3" />}
+                          <span>{p}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="pt-2">
+                  <Magnet padding={40} magnetStrength={3} wrapperClassName="w-full">
+                    <StarBorder
+                      as="button"
+                      type="submit"
+                      color="#38bdf8"
+                      speed="3.5s"
+                      thickness={1.5}
+                      backgroundColor="#ffffff"
+                      textColor="#000000"
+                      className="w-full text-sm font-semibold shadow-[0_0_25px_-5px_rgba(255,255,255,0.4)] transition-all hover:opacity-95 active:scale-[0.99]"
+                    >
+                      <div className="flex items-center justify-center gap-2 py-3 px-5 text-zinc-950 font-semibold">
+                        <span>Get Priority Access</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </div>
+                    </StarBorder>
+                  </Magnet>
+                </div>
+              </form>
+            ) : (
+              <div className="mt-8 rounded-2xl border border-emerald/30 bg-background/90 p-6 shadow-xl">
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald/10 text-emerald">
+                      <Ticket className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <h3 className="text-base font-semibold text-foreground">
+                        You&apos;re on the list, {data.name.split(" ")[0]}!
+                      </h3>
+                      <ShinyText
+                        text="QEVRA PRO PRIORITY PASS"
+                        speed={2}
+                        color="#10b981"
+                        shineColor="#ffffff"
+                        className="font-mono text-[11px] font-semibold"
+                      />
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleReset}
+                    className="text-xs text-muted-foreground hover:text-foreground underline font-mono"
+                  >
+                    Edit details
+                  </button>
+                </div>
+
+                <div className="mt-6 grid grid-cols-2 gap-4 border-t border-border/80 pt-5">
+                  <div>
+                    <span className="text-xs text-muted-foreground">Registered Email</span>
+                    <p className="mt-0.5 font-mono text-xs text-foreground truncate">{data.email}</p>
+                  </div>
+                  <div>
+                    <span className="text-xs text-muted-foreground">Target Platforms</span>
+                    <p className="mt-0.5 text-xs text-foreground">{data.platforms.join(", ")}</p>
+                  </div>
+                </div>
+
+                <div className="mt-6 flex items-center justify-between rounded-xl border border-emerald/20 bg-emerald/5 p-4">
+                  <div className="flex flex-col">
+                    <span className="font-mono text-[11px] text-emerald font-semibold uppercase tracking-wider">
+                      Confirmed Waitlist Position
+                    </span>
+                    <span className="text-xs text-muted-foreground">
+                      Batched invite invitations starting this week
+                    </span>
+                  </div>
+                  <div className="flex items-baseline font-mono text-3xl font-bold text-emerald">
+                    <span>#</span>
+                    <CountUp to={data.position} duration={1.5} />
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="mt-5 flex items-end justify-between border-t border-border pt-5">
-              <span className="text-xs text-subtle">Current waitlist position</span>
-              <span className="font-mono text-3xl font-semibold text-emerald">#{position}</span>
-            </div>
+            )}
           </div>
-        )}
-      </div>
+        </div>
+      </BorderGlow>
     </section>
   );
 }
+
+export default Waitlist;

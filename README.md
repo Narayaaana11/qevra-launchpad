@@ -128,9 +128,9 @@ A dedicated section designed to eliminate onboarding friction for users:
 
     - Paste your `GROQ_API_KEY`, select **Direct Dictation**, and click **Save Settings**.
 
-  - **Step 4 (Optional for Developers)**:
+  - **Step 4 (Authorized Developers)**:
 
-    - Code block for running from source: `git clone https://github.com/YourOrg/QEVRA.git` -> `npm install` -> `npm run dev`.
+    - Instructions for private repository setup: `npm install` -> `npm run dev`.
 
 #### 6. GLOBAL SHORTCUTS REFERENCE TABLE
 
@@ -190,7 +190,7 @@ A modern timeline showcasing the vision:
 
 #### 10. FOOTER
 
-- Minimalist footer with QEVRA branding, GitHub repo link, MIT/Proprietary license notice, and tagline: *"Built for high-velocity builders."*
+- Minimalist footer with QEVRA branding, security and documentation verification link, MIT/Proprietary license notice, and tagline: *"Built for high-velocity builders."*
 
 This project was built with [Lovable](https://lovable.dev).
 

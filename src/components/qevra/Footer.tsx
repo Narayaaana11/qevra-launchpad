@@ -1,27 +1,34 @@
-import { Github } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 
 export function Footer() {
   return (
-    <footer className="border-t border-border">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-10 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-2.5">
-          <span className="flex h-6 w-6 items-center justify-center rounded-md surface-raised">
-            <span className="h-2 w-2 rounded-[2px] bg-emerald" />
-          </span>
-          <span className="font-mono text-xs font-semibold tracking-[0.18em]">QEVRA</span>
-          <span className="text-xs text-subtle">Built for high-velocity builders.</span>
+    <footer className="border-t border-border/80 bg-background/95">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-5 py-12 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-7 w-7 items-center justify-center rounded-lg border border-border bg-canvas shadow-inner">
+            <span className="h-2 w-2 rounded-full bg-emerald shadow-[0_0_8px_var(--emerald)]" />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="font-mono text-xs font-bold tracking-[0.2em] text-foreground">
+              QEVRA
+            </span>
+            <span className="text-zinc-600">/</span>
+            <span className="text-xs text-muted-foreground">Built for high-velocity builders.</span>
+          </div>
         </div>
-        <div className="flex items-center gap-5 text-xs text-subtle">
+
+        <div className="flex flex-wrap items-center gap-6 text-xs text-muted-foreground">
           <a
-            href="https://github.com"
-            target="_blank"
-            rel="noreferrer"
+            href="#faq"
             className="flex items-center gap-1.5 transition-colors hover:text-foreground"
           >
-            <Github className="h-3.5 w-3.5" /> Repository
+            <ShieldCheck className="h-4 w-4 text-emerald" />
+            <span>Private Architecture &amp; Security</span>
           </a>
-          <span className="font-mono">MIT · Proprietary Pro modules</span>
-          <span>© {new Date().getFullYear()} QEVRA</span>
+          <span className="font-mono text-[11px] text-zinc-500">
+            MIT Engine · Proprietary Pro Modules
+          </span>
+          <span className="text-zinc-500">© {new Date().getFullYear()} QEVRA Platform</span>
         </div>
       </div>
     </footer>

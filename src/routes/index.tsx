@@ -10,6 +10,7 @@ import { Roadmap } from "@/components/qevra/Roadmap";
 import { Waitlist } from "@/components/qevra/Waitlist";
 import { FaqFeedback } from "@/components/qevra/FaqFeedback";
 import { Footer } from "@/components/qevra/Footer";
+import { ClickSpark } from "@/components/reactbits";
 
 const title = "QEVRA Desktop — Local-first AI voice-to-action for Windows";
 const description =
@@ -31,19 +32,23 @@ export const Route = createFileRoute("/")({
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background">
-      <Nav />
-      <main>
-        <Hero />
-        <Simulator />
-        <Capabilities />
-        <DownloadSetup />
-        <Shortcuts />
-        <Roadmap />
-        <Waitlist />
-        <FaqFeedback />
-      </main>
-      <Footer />
-    </div>
+    <ClickSpark sparkColor="#38bdf8" sparkSize={12} sparkRadius={22} sparkCount={9} duration={450}>
+      <div className="min-h-screen bg-background relative selection:bg-cyan/30 selection:text-cyan">
+        <Nav />
+        <main className="relative z-10">
+          <Hero />
+          <Simulator />
+          <Capabilities />
+          <DownloadSetup />
+          <Shortcuts />
+          <Roadmap />
+          <Waitlist />
+          <FaqFeedback />
+        </main>
+        <Footer />
+      </div>
+    </ClickSpark>
   );
 }
+
+export default Index;
