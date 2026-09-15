@@ -186,8 +186,8 @@ export function Simulator() {
       </div>
 
       {/* Target Application Tabs */}
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-2">
-        <div className="inline-flex rounded-xl border border-border bg-canvas/90 p-1 backdrop-blur-md shadow-sm">
+      <div className="mt-8 flex items-center justify-center">
+        <div className="flex flex-wrap items-center justify-center gap-1 rounded-xl border border-border bg-canvas/90 p-1 backdrop-blur-md shadow-sm max-w-full">
           {[
             { id: "cursor", label: "Cursor IDE", icon: Code2 },
             { id: "vscode", label: "VS Code", icon: Code2 },
@@ -201,7 +201,7 @@ export function Simulator() {
                 setPhase("idle");
                 setTyped("");
               }}
-              className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all ${
+              className={`flex items-center gap-1.5 rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-medium transition-all ${
                 activeApp === app.id
                   ? "border border-border-strong bg-background text-foreground shadow-sm"
                   : "text-muted-foreground hover:text-foreground"
@@ -336,9 +336,9 @@ export function Simulator() {
         </Magnet>
 
         {/* Mode Toggle Switcher with ShinyText */}
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 max-w-full">
           <span className="text-xs text-muted-foreground">Mode:</span>
-          <div className="inline-flex rounded-lg border border-border bg-canvas/90 p-1 shadow-inner">
+          <div className="flex flex-wrap justify-center rounded-lg border border-border bg-canvas/90 p-1 shadow-inner max-w-full">
             {(["direct", "smart"] as const).map((m) => (
               <button
                 key={m}
@@ -347,7 +347,7 @@ export function Simulator() {
                   setPhase("idle");
                   setTyped("");
                 }}
-                className={`flex items-center gap-1.5 rounded-md px-3.5 py-1.5 text-xs font-medium transition-all ${
+                className={`flex items-center gap-1.5 rounded-md px-2.5 sm:px-3.5 py-1.5 text-xs font-medium transition-all ${
                   mode === m
                     ? "border border-border-strong bg-background text-foreground shadow-sm"
                     : "text-muted-foreground hover:text-foreground"
@@ -355,22 +355,39 @@ export function Simulator() {
               >
                 {m === "smart" && <Sparkles className="h-3 w-3 text-cyan" />}
                 {mode === m ? (
-                  <ShinyText
-                    text={
-                      m === "direct"
-                        ? "Direct Dictation (Verbatim)"
-                        : "Smart Copilot (Prompt Engineered)"
-                    }
-                    speed={2.5}
-                    color="#ffffff"
-                    shineColor="#38bdf8"
-                  />
+                  <>
+                    <span className="hidden sm:inline">
+                      <ShinyText
+                        text={
+                          m === "direct"
+                            ? "Direct Dictation (Verbatim)"
+                            : "Smart Copilot (Prompt Engineered)"
+                        }
+                        speed={2.5}
+                        color="#ffffff"
+                        shineColor="#38bdf8"
+                      />
+                    </span>
+                    <span className="sm:hidden">
+                      <ShinyText
+                        text={m === "direct" ? "Direct" : "Smart Copilot"}
+                        speed={2.5}
+                        color="#ffffff"
+                        shineColor="#38bdf8"
+                      />
+                    </span>
+                  </>
                 ) : (
-                  <span>
-                    {m === "direct"
-                      ? "Direct Dictation (Verbatim)"
-                      : "Smart Copilot (Prompt Engineered)"}
-                  </span>
+                  <>
+                    <span className="hidden sm:inline">
+                      {m === "direct"
+                        ? "Direct Dictation (Verbatim)"
+                        : "Smart Copilot (Prompt Engineered)"}
+                    </span>
+                    <span className="sm:hidden">
+                      {m === "direct" ? "Direct" : "Smart Copilot"}
+                    </span>
+                  </>
                 )}
               </button>
             ))}
